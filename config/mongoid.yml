@@ -1,0 +1,27 @@
+development:
+  clients:
+    default:
+      database: tenants_development
+      hosts:
+        - localhost:27018
+      options:
+  options:
+    raise_not_found_error: false
+
+test:
+  clients:
+    default:
+      database: tenants_test
+      hosts:
+        - localhost:27017
+      options:
+  options:
+    raise_not_found_error: false
+
+production:
+  clients:
+    default:
+      uri: <%= ENV["MONGO_ADDRESS"] %>
+      options:
+  options:
+    raise_not_found_error: false
