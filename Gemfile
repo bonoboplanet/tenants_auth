@@ -10,10 +10,10 @@ gem 'sinatra-activerecord'
 gem 'rake'
 gem 'mongoid', '~> 6.0.0'
 gem 'racksh'
+gem 'rest-client'
 
 group :test, :development do
   
   gem 'byebug'
   gem 'rspec'
-
 end
