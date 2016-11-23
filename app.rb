@@ -11,7 +11,7 @@ class App < Sinatra::Application
     end
   end
 
-  get '/status_check' do
+  get '/status' do
     halt 200, "Server ok"
   end
 
@@ -37,7 +37,6 @@ class App < Sinatra::Application
   end
 
   post '/signup' do
-    byebug
     hsh = post_body
     begin
        response = RestClient.post "#{ENV['USERS_URL']}?current_user_role=1&api_key=#{ENV['API_KEY']}", hsh.to_json, {content_type: :json, accept: :json}
@@ -59,7 +58,6 @@ class App < Sinatra::Application
 
 
   get '/current_user' do
-    
     halt 400, { errors: "Authorization header required in the request"}.to_json if @authentication_token.blank?
     user = User.find_by(auth_token: @authentication_token)
     halt 200, ( jbuilder :show, locals: { user: user } ) unless user.blank?
@@ -67,13 +65,6 @@ class App < Sinatra::Application
   end
 
 private
-
-  def authenticate_with_token!
-    render json: { errors: "Not authenticated" },
-                status: :unauthorized unless current_user.present?
-  end
-
-
 
   def post_body 
     request.body.rewind
