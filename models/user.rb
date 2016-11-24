@@ -14,12 +14,11 @@ class User
 
   validates :auth_token, uniqueness: true, :allow_nil => true, :allow_blank => true
 
+  # Generates a token preventing the token is not used by any other user
   def generate_authentication_token!
     begin
       self.auth_token = "token_tentant_" + SecureRandom.urlsafe_base64
     end while User.find_by(auth_token: self.auth_token )
   end
-
-  require 'securerandom'
 
 end

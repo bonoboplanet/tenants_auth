@@ -15,7 +15,8 @@ class App < Sinatra::Application
     halt 200, "Server ok"
   end
 
-
+  # Signs in an existing user (starts the session)
+  # Permissions : Everybody
   post '/signin' do
   	hsh = post_body
   	password = Digest::MD5.hexdigest(hsh[:password] << hsh[:username] ) 
@@ -26,7 +27,8 @@ class App < Sinatra::Application
     halt 200, ( jbuilder :show, locals: { user: user } )
   end
 
-
+  # Logs out the current user (Finishes the session)
+  # Permissions : Logged in user
   delete '/signout' do
     halt 403 if @authentication_token.blank?
     user = User.find_by(auth_token: @authentication_token)
@@ -36,6 +38,8 @@ class App < Sinatra::Application
     halt 200, { message: "user logged out"}.to_json
   end
 
+  # Signs up and logs in a new user  (starts the session)
+  # Permissions : Everybody
   post '/signup' do
     hsh = post_body
     begin
@@ -56,9 +60,10 @@ class App < Sinatra::Application
 
   end
 
-
+  # Given an authentication token returns the logged in user
+  # Permissions : Logged in user
   get '/current_user' do
-    halt 400, { errors: "Authorization header required in the request"}.to_json if @authentication_token.blank?
+    halt 403, { errors: "Authorization header required in the request"}.to_json if @authentication_token.blank?
     user = User.find_by(auth_token: @authentication_token)
     halt 200, ( jbuilder :show, locals: { user: user } ) unless user.blank?
     halt 400,  { errors: "authentication failed"}.to_json
