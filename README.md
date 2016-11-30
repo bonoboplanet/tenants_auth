@@ -6,7 +6,7 @@
 
  - Access won't be granted if trying to access without passing throught the API and **api_key** is not provided.
 
- - `/current_user` and `/signout` endpoints also require authentication tocken as part of the header request.
+ - `/current_user` and `/signout` endpoints also require authentication tocken as part of the header request => 'Authorization'.
 
 
 | #  | Resource |  
@@ -50,7 +50,7 @@
 | --- |:---:|:---:|:---:|:---:|
 |   |   |   |   |   |
 
-- Authentication token is expected as part of the header request => 'HTTP_AUTHORIZATION'.
+- Authentication token is expected as part of the header request => 'Authorization'.
 
 - **Note**: If log out successful it removes the current user's `Authentication token`, which will destroy the session for this user.
 
@@ -72,7 +72,7 @@
 | --- |:---:|:---:|:---:|:---:|
 |   |   |   |   |   |
 
-- Authentication token is expected as part of the header request => 'HTTP_AUTHORIZATION'.
+- Authentication token is expected as part of the header request => 'Authorization'.
 
 
 
