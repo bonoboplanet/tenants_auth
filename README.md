@@ -22,8 +22,8 @@
 | [1](#1-get-status)   | GET    | /status   | checks the status of the service | N/A |
 | [2](#2-post-signin)  | POST    | /signin         | Logs in to an existing user (Starts the session) | N/A |
 | [3](#3-delete-signout)  | DELETE    | /:signout | Logs out the current user (Kills the session) | Logged in user |
-| [4](4-post-signup)  | POST   | /signup         | Creates a new user (Signs up) and logs him/her in (Starts the session) | N/A |
-| [5](#5-put-current_user)  | GET    | /current_user | Returns the current logged in user | Logged in user |
+| [4](#4-post-signup)  | POST   | /signup         | Creates a new user (Signs up) and logs him/her in (Starts the session) | N/A |
+| [5](#5-get-current_user)  | GET    | /current_user | Returns the current logged in user | Logged in user |
 
 ### Details
 
@@ -44,7 +44,7 @@
 **Note**: If log in successful it returns an `Authentication token`, which will be used as session Id for this user
 
 
-#### 3. POST /:signout
+#### 3. DELETE /:signout
 
 |  parameter | type | required  | body/param  | notes  |
 | --- |:---:|:---:|:---:|:---:|
