@@ -1,5 +1,7 @@
 ENV['RACK_ENV'] = 'test'
 ENV["API_KEY"] = "123_test" 
+ENV["USERS_URL"] = "123_test" 
+
 
 require 'rack/test'
 require 'rspec'

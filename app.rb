@@ -35,9 +35,9 @@ class App < Sinatra::Application
     halt 403 if @authentication_token.blank?
     user = User.find_by(auth_token: @authentication_token)
     halt 404, { errors: "authentication failed"}.to_json if user.blank?
-    user.auth_token = ""
+    user.auth_token = nil
     user.save
-    halt 200, { message: "user logged out"}.to_json
+    halt 204, { message: "user logged out"}.to_json
   end
 
   # Signs up and logs in a new user  (starts the session)
@@ -53,7 +53,7 @@ class App < Sinatra::Application
            user.save
            halt 201, ( jbuilder :show, locals: { user: user } )
        else
-          halt 204
+          halt response.code, response.body
        end
 
     rescue RestClient::ExceptionWithResponse => e
@@ -68,7 +68,7 @@ class App < Sinatra::Application
     halt 403, { errors: "Authorization header required in the request"}.to_json if @authentication_token.blank?
     user = User.find_by(auth_token: @authentication_token)
     halt 200, ( jbuilder :show, locals: { user: user } ) unless user.blank?
-    halt 400,  { errors: "authentication failed"}.to_json
+    halt 404,  { errors: "authentication failed"}.to_json
   end
 
 private
