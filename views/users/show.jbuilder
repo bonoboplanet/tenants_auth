@@ -1,4 +1,4 @@
-json.set! :user do
-	json.partial! 'user', user: user 
+json.set! :session do
+	json.partial! 'session', user: user 
 end
 

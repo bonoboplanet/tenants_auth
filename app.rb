@@ -6,7 +6,7 @@ class App < Sinatra::Application
 
   before '*' do
     @authentication_token = env['HTTP_AUTHORIZATION']
-    unless request.path == "/status_check" or ENV["RACK_ENV"] == 'development'
+    unless request.path == "/status" or ENV["RACK_ENV"] == 'development'
       halt 403  unless  params[:api_key] == ENV["API_KEY"]
     end
   end
@@ -19,12 +19,14 @@ class App < Sinatra::Application
   # Permissions : Everybody
   post '/signin' do
   	hsh = post_body
+    halt 400, { errors: "username not provided"}.to_json if hsh[:username].blank?
+    halt 400, { errors: "password not provided"}.to_json if hsh[:password].blank?
   	password = Digest::MD5.hexdigest(hsh[:password] << hsh[:username] ) 
   	user = User.find_by(username: hsh[:username], pwd: password)
   	halt 400, { errors: "user or password incorrect"}.to_json if user.blank?
     user.generate_authentication_token!
     user.save
-    halt 200, ( jbuilder :show, locals: { user: user } )
+    halt 201, ( jbuilder :show, locals: { user: user } )
   end
 
   # Logs out the current user (Finishes the session)

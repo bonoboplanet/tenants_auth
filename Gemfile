@@ -13,7 +13,10 @@ gem 'racksh'
 gem 'rest-client'
 
 group :test, :development do
-  
-  gem 'byebug'
   gem 'rspec'
+  gem 'rspec-instafail'
+  gem 'rack-test'
+  gem 'database_cleaner'
+  gem 'factory_girl'
+  gem 'byebug'
 end
