@@ -19,11 +19,11 @@ class App < Sinatra::Application
   # Permissions : Everybody
   post '/signin' do
   	hsh = post_body
-    halt 400, { errors: "username not provided"}.to_json if hsh[:username].blank?
-    halt 400, { errors: "password not provided"}.to_json if hsh[:password].blank?
+    halt 400, { errors: ["username not provided"]}.to_json if hsh[:username].blank?
+    halt 400, { errors: ["password not provided"]}.to_json if hsh[:password].blank?
   	password = Digest::MD5.hexdigest(hsh[:password] << hsh[:username] ) 
   	user = User.find_by(username: hsh[:username], pwd: password)
-  	halt 400, { errors: "user or password incorrect"}.to_json if user.blank?
+  	halt 400, { errors: ["user or password incorrect"]}.to_json if user.blank?
     user.generate_authentication_token!
     user.save
     halt 201, ( jbuilder :show, locals: { user: user } )
@@ -34,7 +34,7 @@ class App < Sinatra::Application
   delete '/signout' do
     halt 403 if @authentication_token.blank?
     user = User.find_by(auth_token: @authentication_token)
-    halt 404, { errors: "authentication failed"}.to_json if user.blank?
+    halt 404, { errors: ["authentication failed"]}.to_json if user.blank?
     user.auth_token = nil
     user.save
     halt 204, { message: "user logged out"}.to_json
@@ -65,10 +65,10 @@ class App < Sinatra::Application
   # Given an authentication token returns the logged in user
   # Permissions : Logged in user
   get '/current_user' do
-    halt 403, { errors: "Authorization header required in the request"}.to_json if @authentication_token.blank?
+    halt 403, { errors: ["Authorization header required in the request"]}.to_json if @authentication_token.blank?
     user = User.find_by(auth_token: @authentication_token)
     halt 200, ( jbuilder :show, locals: { user: user } ) unless user.blank?
-    halt 404,  { errors: "authentication failed"}.to_json
+    halt 404,  { errors: ["Authorization token not valid"]}.to_json
   end
 
 private
